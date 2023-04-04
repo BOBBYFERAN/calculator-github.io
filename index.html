@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <style>
+    body {
+  background-color: #8a2be2;
+}
+
+.calculator {
+  width: 300px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.display {
+  background-color: #eee;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.display p {
+  font-size: 36px;
+  margin: 0;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+}
+
+button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+.operator {
+  background-color: #f44336;
+}
+
+#clear {
+  background-color: #ff9800;
+}
+
+#equals {
+  background-color: #2196f3;
+}
+
+#equals:hover {
+  background-color: #0d47a1;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+
+  </style>
+  <body>
+    <div class="calculator">
+      <div class="display">
+        <p id="result">0</p>
+      </div>
+      <div class="buttons">
+        <button class="operator" value="+">+</button>
+        <button class="operator" value="-">-</button>
+        <button class="operator" value="*">&times;</button>
+        <button class="operator" value="/">&divide;</button>
+        <button value="7">7</button>
+        <button value="8">8</button>
+        <button value="9">9</button>
+        <button value="4">4</button>
+        <button value="5">5</button>
+        <button value="6">6</button>
+        <button value="1">1</button>
+        <button value="2">2</button>
+        <button value="3">3</button>
+        <button value="0">0</button>
+        <button value=".">.</button>
+        <button id="clear">C</button>
+        <button id="equals">=</button>
+      </div>
+    </div>
+  </body>
+  <script>
+      
+      const display = document.getElementById('result');
+const clearButton = document.getElementById('clear');
+const equalsButton = document.getElementById('equals');
+
+let operand1 = null;
+let operator = null;
+
+function clear() {
+  operand1 = null;
+  operator = null;
+  display.textContent = '0';
+}
+
+function calculate() {
+  const operand2 = parseFloat(display.textContent);
+  let result = null;
+
+  switch(operator) {
+    case '+':
+      result = operand1 + operand2;
+      break;
+    case '-':
+      result = operand1 - operand2;
+      break;
+    case '*':
+      result = operand1 * operand2;
+      break;
+    case '/':
+      result = operand1 / operand2;
+      break;
+    default:
+      return;
+  }
+
+  operand1 = result;
+  operator = null;
+  display.textContent = result;
+}
+
+function inputNumber(number) {
+  if (display.textContent === '0') {
+    display.textContent = number;
+  } else {
+    display.textContent += number;
+  }
+}
+
+function inputOperator(selectedOperator) {
+  if (operator !== null) {
+    calculate();
+  }
+  
+  operand1 = parseFloat(display.textContent);
+  operator = selectedOperator;
+  display.textContent = '0';
+}
+
+clearButton.addEventListener('click', clear);
+
+equalsButton.addEventListener('click', calculate);
+
+const numberButtons = document.querySelectorAll('button:not(.operator)');
+numberButtons.forEach(button => {
+  button.addEventListener('click', function(event) {
+    const number = event.target.value;
+    inputNumber(number);
+  });
+});
+
+const operatorButtons = document.querySelectorAll('.operator');
+operatorButtons.forEach(button => {
+  button.addEventListener('click', function(event) {
+    const selectedOperator = event.target.value;
+    inputOperator(selectedOperator);
+  });
+});
+
+  </script>
+</html>
+
